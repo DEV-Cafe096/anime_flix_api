@@ -6,9 +6,9 @@ const port = 3000;
 const app = express();
 const prisma = new PrismaClient();
 
-app.get('/movies', async (req, res) => {
-    const movies = await prisma.movie.findMany();
-    res.json(movies);
+app.get('/animes', async (req, res) => {
+    const animes = await prisma.anime.findMany();
+    res.json(animes);
 })
 
 app.listen(port, () => {
