@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-
+// import { Request, Response } from 'express';
 
 const port = 3000;
 const app = express();
@@ -31,13 +31,21 @@ app.post('/animes', async (req, res) => {
 	const { title, genre_id, language_id, description, release_date } = req.body;
 
 	try {
+		// Verificar se o anime já existe
+		const animeExists = await prisma.anime.findFirst({
+			where: { title: { equals: title, mode: 'insensitive' } },
+		});
+		if (animeExists) {
+			return res.status(409).send({ message: 'Anime já existe' });
+		}
+
 		await prisma.anime.create({
 			data: {
 				title: title,
 				genre_id: genre_id,
 				language_id: language_id,
 				description: description,
-				release_date: new Date(release_date)
+				release_date: new Date(release_date),
 			},
 		});
 		// Enviar uma resposta de sucesso
