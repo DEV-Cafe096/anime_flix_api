@@ -99,16 +99,45 @@ app.delete('/animes/:id', async (req, res) => {
 		const anime = await prisma.anime.findUnique({
 			where: { id },
 		});
-		
+
 		if (!anime) {
 			res.status(404).send({ message: 'anime não encontrado' });
 		}
-		
+
 		await prisma.anime.delete({ where: { id } });
 		res.status(200).send({ message: 'Anime deletado com sucesso!' });
 	} catch (error) {
 		console.error(error);
 		res.status(500).send({ message: 'Erro ao deletar anime' });
+	}
+});
+
+app.get('/animes/:genreName', async (req, res) => {
+	try {
+		// const genreName = req.params.genreName;
+		// if (!genreName || typeof genreName !== 'string') {
+		// 	res.status(400).send({ message: 'Nome do gênero inválido' });
+		// }
+
+		console.log(req.params.genreName);
+		const animesFilteredByGenreName = await prisma.anime.findMany({
+			include: {
+				genres: true,
+				languages: true,
+			},
+			where: {
+				genres: {
+					name: {
+						equals: req.params.genreName,
+						mode: 'insensitive',
+					},
+				},
+			},
+		});
+		res.status(200).send(animesFilteredByGenreName);
+	} catch (error) {
+		console.error(error);
+		res.status(500).send({ message: 'Erro ao filtrar animes' });
 	}
 });
 
