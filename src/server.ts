@@ -36,7 +36,7 @@ app.post('/animes', async (req, res) => {
 			where: { title: { equals: title, mode: 'insensitive' } },
 		});
 		if (animeExists) {
-			return res.status(409).send({ message: 'Anime já existe' });
+			res.status(409).send({ message: 'Anime já existe' });
 		}
 
 		await prisma.anime.create({
@@ -53,6 +53,41 @@ app.post('/animes', async (req, res) => {
 	} catch (error) {
 		console.error(error);
 		res.status(500).send({ message: 'Erro ao criar anime' });
+	}
+});
+
+app.put('/animes/:id', async (req, res) => {
+	// console.log(req.params.id);
+	try {
+		const anime = await prisma.anime.findUnique({
+			where: {
+				id: Number(req.params.id),
+			},
+			include: {
+				genres: true,
+				languages: true,
+			},
+		});
+		if (!anime) {
+			res.status(404).send({ message: 'Anime não encontrado' });
+		}
+
+		await prisma.anime.update({
+			where: {
+				id: Number(req.params.id),
+			},
+			data: {
+				title: req.body.title,
+				genre_id: Number(req.body.genre_id),
+				language_id: Number(req.body.language_id),
+				description: req.body.description,
+				release_date: new Date(req.body.release_date),
+			},
+		});
+		res.status(200).send({ message: 'Dados atualizados com sucesso!' });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'Erro ao atualizar anime' });
 	}
 });
 
