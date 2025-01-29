@@ -91,6 +91,27 @@ app.put('/animes/:id', async (req, res) => {
 	}
 });
 
+//deletar um anime
+
+app.delete('/animes/:id', async (req, res) => {
+	try {
+		const id = Number(req.params.id);
+		const anime = await prisma.anime.findUnique({
+			where: { id },
+		});
+		
+		if (!anime) {
+			res.status(404).send({ message: 'anime não encontrado' });
+		}
+		
+		await prisma.anime.delete({ where: { id } });
+		res.status(200).send({ message: 'Anime deletado com sucesso!' });
+	} catch (error) {
+		console.error(error);
+		res.status(500).send({ message: 'Erro ao deletar anime' });
+	}
+});
+
 app.listen(port, () => {
 	console.log(`Servidor executando na porta ${port}`);
 });
