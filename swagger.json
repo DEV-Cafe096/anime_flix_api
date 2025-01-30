@@ -1,353 +1,363 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "AnimeFlix API",
-        "version": "1.0.0",
-        "description": "API para gerenciamento de animes"
-    },
-    "host": "localhost:3000",
-    "basePath": "/api",
-    "schemes": ["http"],
-    "paths": {
-        "/animes": {
-            "get": {
-                "description": "Retorna todos os animes cadastrados",
-                "produces": ["application/json"],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Anime"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            },
-            "post": {
-                "description": "Cria um novo anime no banco de dados",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "anime",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/AnimeInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Anime criado com sucesso"
-                    },
-                    "400": {
-                        "description": "Dados inválidos"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            }
-        },
-        "/animes/{id}": {
-            "get": {
-                "description": "Retorna um anime específico",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso",
-                        "schema": {
-                            "$ref": "#/definitions/Anime"
-                        }
-                    },
-                    "404": {
-                        "description": "Anime não encontrado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            },
-            "put": {
-                "description": "Atualiza um anime",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    },
-                    {
-                        "name": "anime",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/AnimeInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Anime atualizado com sucesso"
-                    },
-                    "400": {
-                        "description": "Dados inválidos"
-                    },
-                    "404": {
-                        "description": "Anime não encontrado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            },
-            "delete": {
-                "description": "Deleta um anime",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "type": "integer"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Anime deletado com sucesso"
-                    },
-                    "404": {
-                        "description": "Anime não encontrado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            }
-        },
-        "/genres": {
-            "get": {
-                "description": "Retorna todos os gêneros cadastrados",
-                "produces": ["application/json"],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Genre"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            }
-        },
-        "/languages": {
-            "get": {
-                "description": "Retorna todas as linguagens cadastradas",
-                "produces": ["application/json"],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Language"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            }
-        },
-        "/animes/{genreName}": {
-            "get": {
-                "description": "Retorna todos os animes de um gênero específico",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "genreName",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Anime"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Nenhum anime encontrado para o gênero especificado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            }
-        },
-        "/animes/{languageName}": {
-            "get": {
-                "description": "Retorna todos os animes de uma linguagem específica",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "languageName",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Anime"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Nenhum anime encontrado para a linguagem especificada"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            }
-        },
-        "/animes/{genreName}/{languageName}": {
-            "get": {
-                "description": "Retorna todos os animes de um gênero específico e uma linguagem específica",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "genreName",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "languageName",
-                        "in": "path",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Sucesso",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Anime"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Nenhum anime encontrado para o gênero e linguagem especificados"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "Anime": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "genre_id": {
-                    "type": "integer"
-                },
-                "language_id": {
-                    "type": "integer"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "release_date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "AnimeInput": {
-            "type": "object",
-            "properties": {
-                "title": {
-                    "type": "string"
-                },
-                "genre_id": {
-                    "type": "integer"
-                },
-                "language_id": {
-                    "type": "integer"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "release_date": {
-                    "type": "string",
-                    "format": "date-time"
-                }
-            }
-        },
-        "Genre": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "Language": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        }
-    }
+	"swagger": "2.0",
+	"info": {
+		"title": "AnimeFlix API",
+		"version": "1.0.0",
+		"description": "API para gerenciamento de animes"
+	},
+	"host": "localhost:3000",
+	"schemes": ["http"],
+	"paths": {
+		"/animes": {
+			"get": {
+				"tags": ["Animes"],
+				"description": "Retorna todos os animes cadastrados",
+				"produces": ["application/json"],
+				"responses": {
+					"200": {
+						"description": "Sucesso",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/Anime"
+							}
+						}
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			},
+			"post": {
+				"tags": ["Animes"],
+
+				"description": "Cria um novo anime no banco de dados",
+				"consumes": ["application/json"],
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "anime",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/AnimeInput"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "Anime criado com sucesso"
+					},
+					"400": {
+						"description": "Dados inválidos"
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			}
+		},
+		"/animes/{id}": {
+			"get": {
+				"tags": ["Animes"],
+				"description": "Retorna um anime específico",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Sucesso",
+						"schema": {
+							"$ref": "#/definitions/Anime"
+						}
+					},
+					"404": {
+						"description": "Anime não encontrado"
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			},
+			"put": {
+				"tags": ["Animes"],
+				"description": "Atualiza um anime",
+				"consumes": ["application/json"],
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"type": "integer"
+					},
+					{
+						"name": "anime",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/AnimeInput"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Anime atualizado com sucesso"
+					},
+					"400": {
+						"description": "Dados inválidos"
+					},
+					"404": {
+						"description": "Anime não encontrado"
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Animes"],
+				"description": "Deleta um anime",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"type": "integer"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Anime deletado com sucesso"
+					},
+					"404": {
+						"description": "Anime não encontrado"
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			}
+		},
+		"/genres": {
+			"get": {
+				"tags": ["Genres"],
+				"description": "Retorna todos os gêneros cadastrados",
+				"produces": ["application/json"],
+				"responses": {
+					"200": {
+						"description": "Sucesso",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/Genre"
+							}
+						}
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			}
+		},
+		"/languages": {
+			"get": {
+				"tags": ["Languages"],
+				"description": "Retorna todas as linguagens cadastradas",
+				"produces": ["application/json"],
+				"responses": {
+					"200": {
+						"description": "Sucesso",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/Language"
+							}
+						}
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			}
+		},
+		"/animes/{genreName}": {
+			"get": {
+				"tags": ["Animes"],
+				"description": "Retorna todos os animes de um gênero específico",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "genreName",
+						"in": "path",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Sucesso",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/Anime"
+							}
+						}
+					},
+					"404": {
+						"description": "Nenhum anime encontrado para o gênero especificado"
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			}
+		},
+		"/animes/{languageName}": {
+			"get": {
+				"tags": ["Animes"],
+				"description": "Retorna todos os animes de uma linguagem específica",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "languageName",
+						"in": "path",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Sucesso",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/Anime"
+							}
+						}
+					},
+					"404": {
+						"description": "Nenhum anime encontrado para a linguagem especificada"
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			}
+		},
+		"/animes/{genreName}/{languageName}": {
+			"get": {
+				"tags": ["Animes"],
+				"description": "Retorna todos os animes de um gênero específico e uma linguagem específica",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"name": "genreName",
+						"in": "path",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "languageName",
+						"in": "path",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Sucesso",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/Anime"
+							}
+						}
+					},
+					"404": {
+						"description": "Nenhum anime encontrado para o gênero e linguagem especificados"
+					},
+					"500": {
+						"description": "Erro no servidor"
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"Anime": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer"
+				},
+				"title": {
+					"type": "string"
+				},
+				"genre_id": {
+					"type": "integer"
+				},
+				"language_id": {
+					"type": "integer"
+				},
+				"description": {
+					"type": "string"
+				},
+				"release_date": {
+					"type": "string",
+					"format": "date-time"
+				}
+			}
+		},
+		"AnimeInput": {
+			"type": "object",
+			"properties": {
+				"title": {
+					"type": "string"
+				},
+				"genre_id": {
+					"type": "integer"
+				},
+				"language_id": {
+					"type": "integer"
+				},
+				"description": {
+					"type": "string"
+				},
+				"release_date": {
+					"type": "string",
+					"format": "date-time"
+				}
+			}
+		},
+		"Genre": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer"
+				},
+				"name": {
+					"type": "string"
+				}
+			}
+		},
+		"Language": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer"
+				},
+				"name": {
+					"type": "string"
+				}
+			}
+		}
+	}
 }
